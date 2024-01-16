@@ -7,16 +7,13 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import MinMaxScaler
-from keras.models import Sequential
-from keras.layers import Dense
-from keras.layers import LSTM
 
 ##################  Min-Max Scaling  ####################################
 
-def mm_scale(df):
+def minmax_scale(df):
     dates = np.array(df.index)
-    mm_sc = MinMaxScaler()
-    data_sc = mm_sc.fit_transform(df)
+    scaler = MinMaxScaler()
+    data_sc = scaler.fit_transform(df)
     return dates, data_sc
 
 ###################  Train/Val/Test Split  ##############################
@@ -51,16 +48,9 @@ def arr_to_xy(arr, look_back):
 
 ##############  Build Model; Train Model; Make Predictions  ##############
 
-def lstm_model_pred(x_train, y_train, x_val, y_val, x_test, epochs):
+def lstm_model_fit_pred(model, x_train, y_train, x_val, y_val, x_test, epochs, verbose=1):
 
-    model = Sequential()
-    model.add(LSTM(units=64, input_shape=(x_train.shape[1], x_train.shape[2]), activation='tanh'))
-    model.add(Dense(256))
-    model.add(Dense(256))
-    model.add(Dense(1))
-    model.build()
-    model.compile(loss='mean_squared_error', optimizer='adam', metrics = ['mae'])
-    model.fit(x_train, y_train, validation_data=(x_val,y_val), epochs=epochs, verbose=1)
+    model.fit(x_train, y_train, validation_data=(x_val,y_val), epochs=epochs, verbose=verbose)
     
     train_pred = model.predict(x_train).flatten()
     val_pred = model.predict(x_val).flatten()
@@ -95,13 +85,14 @@ def tvt_vis(dates_train, data_train, dates_val, data_val, dates_test, data_test)
 
 
 def pred_vis(look_back, dates_train, dates_val, dates_test, y_train, y_val, y_test, 
-             train_pred, val_pred, test_pred, show_train, show_val, show_test):
+             train_pred, val_pred, test_pred, show_train, show_val, show_test, ticker):
 
     if show_train:
         plt.figure(figsize=(12,5))
         plt.plot(dates_train[look_back:], train_pred)
         plt.plot(dates_train[look_back:], y_train)
         plt.legend(['Training Predictions','Training Observations'])
+        plt.title(f'{ticker} Training Set')
         plt.show()
 
     if show_val:
@@ -109,6 +100,8 @@ def pred_vis(look_back, dates_train, dates_val, dates_test, y_train, y_val, y_te
         plt.plot(dates_val[look_back:], val_pred)
         plt.plot(dates_val[look_back:], y_val)
         plt.legend(['Validation Predictions','Validation Observations'])
+        plt.title(f'{ticker} Test Set')
+
         plt.show()
 
     if show_test:
@@ -116,6 +109,7 @@ def pred_vis(look_back, dates_train, dates_val, dates_test, y_train, y_val, y_te
         plt.plot(dates_test[look_back:], test_pred)
         plt.plot(dates_test[look_back:], y_test)
         plt.legend(['Test Predictions','Test Observations'])
+        plt.title(f'{ticker} Test Set')
         plt.show()
 
 
