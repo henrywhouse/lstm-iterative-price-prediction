@@ -1,6 +1,8 @@
 # LSTM Iterative Price Prediction
 
-### Summary
+## Use customized LSTM neural networks trained on historical stock prices and macroeconomic indicators to construct efficient, alpha-generating portfolios 
+
+### Introduction
 This repository is a data science project that attempts to construct a portfolio that outperforms its benchmark using neural networks with an LSTM layer in its architecture. The networks are given a matrix of data of size (look_back, n_features)--a sliding window of the previous look_back day's data--and seek to predict the next day's close price of the stock. The features in this implementation are the adjusted close, volume, and two macroeconomic indicators: the VIX and the 3-month treasury rate. The length of the dataset is July 7, 2009, to March 1, 2023. After prediction, we create a strategy in which if the neural network predicts an increase in the price we buy, and if it predicts a decline, we sell. The portfolio is weighted according to the prorated weights of the S&P 500 (e.g., if we take the top 20 stocks, we re-weight those so they add up to 1).
 
 ### Pre-Processing
@@ -16,7 +18,7 @@ For each asset in our list of stocks, we train a unique neural network of the ar
 For each observation in our test set (November 16, 2022, to February 28, 2023), we have a simple method that calculates our position for the next day given our networks' predictions. As mentioned above, if it predicts higher prices than today's actual price, we go long, and if it predicts lower, we sell our holding. We take these positions and calculate a strategy return for each indiviudal stock and then blend the individual returns weighted by market cap to get a portfolio. 
 
 ### Portfolio Statistics
-To analyze overall performance of our algorithm, we 
+To analyze the overall performance of our algorithm, we analyze multiple common statistics for portfolio returns, volume, and efficiency.
 
 ### Limitations
 
