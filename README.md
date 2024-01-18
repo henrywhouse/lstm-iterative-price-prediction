@@ -26,5 +26,5 @@ To analyze the overall performance of our algorithm, we analyze multiple common 
 
 The 'client_notebook.ipynb' is a file that accesses methods from other modules and serves as the main output of the algorithm; in this file, we can adjust the parameters of our model to test different scenarios and architectures. '_data_utils.py' is a file that contains methods for making API calls to fetch data from Yahoo Finance and the FRED database. '_lstm_utils.py' is a file that contains methods for scaling and splitting the data, creating windowed arrays, training & making inferences on the model, and backtesting/visualizing the results. 
 
-####### It is important to create a 'config.py' file that contains two lines (one for each variable): fred_api_key: str and headers: dict. These variables are called in the other modules to fetch our dataset. 
+It is important to create a 'config.py' file that contains two lines (one for each variable): fred_api_key: str and headers: dict. These variables are called in the other modules to fetch our dataset. 
 
